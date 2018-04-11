@@ -1,16 +1,17 @@
 package com.coolweather.android;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +39,10 @@ public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_PROVINCE=0;
     public static final int LEVEL_CITY=1;
     public static final int LEVEL_COUNTY=2;
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
     private TextView titleText;
     private Button backButton;
+    private Button settingButton;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<String> dataList=new ArrayList<>();
@@ -55,6 +57,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText=view.findViewById(R.id.title_text);
         backButton=view.findViewById(R.id.back_button);
         listView=view.findViewById(R.id.list_view);
+        settingButton=view.findViewById(R.id.setting_button);
         adapter=new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
         return view;
@@ -92,6 +95,12 @@ public class ChooseAreaFragment extends Fragment {
                 }else if(currentLevel==LEVEL_CITY){                                                     //如果在城市界面后退，就搜索省
                     queryProvinces();
                 }
+            }
+        });
+        settingButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(),Setting.class);
+                startActivity(intent);
             }
         });
         queryProvinces();
@@ -194,16 +203,15 @@ public class ChooseAreaFragment extends Fragment {
         });
     }
     private void showProgressDialog(){
-        if(progressDialog ==null){
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("正在加载...");
-            progressDialog.setCanceledOnTouchOutside(false);
+        progressBar = new ProgressBar(getActivity());
+        if(progressBar.getVisibility()==View.GONE){
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
-        progressDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
     private void closeProgressDialog(){
-        if(progressDialog != null){
-            progressDialog.dismiss();
+        if(progressBar.getVisibility()==View.VISIBLE) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 }
