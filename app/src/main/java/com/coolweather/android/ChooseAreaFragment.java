@@ -1,17 +1,16 @@
 package com.coolweather.android;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +38,7 @@ public class ChooseAreaFragment extends Fragment {
     public static final int LEVEL_PROVINCE=0;
     public static final int LEVEL_CITY=1;
     public static final int LEVEL_COUNTY=2;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private TextView titleText;
     private Button backButton;
     private Button settingButton;
@@ -99,7 +98,7 @@ public class ChooseAreaFragment extends Fragment {
         });
         settingButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(),Setting.class);
+                Intent intent = new Intent(getActivity(),Settings.class);
                 startActivity(intent);
             }
         });
@@ -203,15 +202,16 @@ public class ChooseAreaFragment extends Fragment {
         });
     }
     private void showProgressDialog(){
-        progressBar = new ProgressBar(getActivity());
-        if(progressBar.getVisibility()==View.GONE){
-            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        if(progressDialog==null){
+            progressDialog=new ProgressDialog(getActivity());
+            progressDialog.setMessage("正在加载...");
+            progressDialog.setCanceledOnTouchOutside(false);
         }
-        progressBar.setVisibility(View.VISIBLE);
+        progressDialog.show();
     }
     private void closeProgressDialog(){
-        if(progressBar.getVisibility()==View.VISIBLE) {
-            progressBar.setVisibility(View.GONE);
+        if(progressDialog!=null) {
+            progressDialog.dismiss();
         }
     }
 }

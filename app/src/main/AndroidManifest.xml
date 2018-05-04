@@ -25,8 +25,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".Setting" >
-        </activity>
+        <activity android:name=".Setting"/>
+        <activity android:name=".Settings" />
     </application>
 
 </manifest>

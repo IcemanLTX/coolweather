@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.coolweather.android.R;
 import com.coolweather.android.gson.Weather;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
@@ -34,7 +36,8 @@ public class AutoUpdateService extends Service {
         updateBingPic();
         AlarmManager manager= (AlarmManager)getSystemService(ALARM_SERVICE);
         SharedPreferences prefs =PreferenceManager.getDefaultSharedPreferences(this);
-        int Hour = prefs.getInt("time",8);
+        int Hour = Integer.valueOf(prefs.getString(getResources().getString(R.string.auto_update_frequency_key),"8"));
+        Log.d("asdf", prefs.getString(getResources().getString(R.string.auto_update_frequency_key),"8"));
         int anHour = Hour*60*60*1000;
         long triggerAtTime = SystemClock.elapsedRealtime()+anHour;
         Intent i = new Intent(this,AutoUpdateService.class);
